@@ -6,21 +6,29 @@ const snakeSize = 10;
 const fruitSize = 10;
 
 // Стартовая позиция змейки
-let x = canvas.width / 2;
-let y = canvas.height / 2;
+let snakeX = canvas.width / 2;
+let snakeY = canvas.height / 2;
+let dx = snakeSize;
+let dy = 0;
 
 // Координаты фруктов
-let fx = 0;
-let fy = 0;
+let fx = getRandomCoord(canvas.width / snakeSize, 0) * snakeSize;
+let fy = getRandomCoord(canvas.width / snakeSize, 0) * snakeSize;
 
+let score = 0;
+let snake = [];
+let tailLength = 1;
 
-function drawSnake() {
-    ctx.beginPath();
-    ctx.fillStyle = '#7d2c98';
-    ctx.fillRect(x, y, snakeSize, snakeSize);
-    ctx.fill();
-    ctx.closePath();
-}
+// function drawSnake() {
+
+//     for (let i = 0; i < snake.length; i += 1){
+//         ctx.beginPath();
+//         ctx.fillStyle = '#7d2c98';
+//         ctx.fillRect(snakeX, snakeY, snakeSize, snakeSize);
+//         ctx.fill();
+//     }
+
+// }
 
 function drawFruit() {
     ctx.beginPath();
@@ -32,50 +40,68 @@ function drawFruit() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawSnake();
     drawFruit();
 
-    if (x > canvas.width - snakeSize ) {
-        console.log('Стенка!!!');
-        x = 0;
-    } else if (x < 0) {
-        console.log('Стенка!!!');
-        x = canvas.width - snakeSize;
+    snakeX += dx;
+    snakeY += dy;
+
+    if (snakeX === fx && snakeY === fy) {
+        score += 1;
+        tailLength += 1;
+        fx = getRandomCoord(canvas.width / snakeSize, 0) * snakeSize;
+        fy = getRandomCoord(canvas.width / snakeSize, 0) * snakeSize;
+
+        console.log(snake);
     }
 
-    if (y > canvas.height - snakeSize) {
-        console.log('Стенка!!!');
-        y = 0;
-    } else if (y < 0) {
-        console.log('Стенка!!!');
-        y = canvas.height - snakeSize;
+    if (snakeX > canvas.width - snakeSize ) {
+        snakeX = 0;
+    } else if (snakeX < 0) {
+        snakeX = canvas.width - snakeSize;
     }
 
-    if (x === fx && y === fy) {
-        console.log('Пора кушать!!');
+    if (snakeY > canvas.height - snakeSize) {
+        snakeY = 0;
+    } else if (snakeY < 0) {
+        snakeY = canvas.height - snakeSize;
+    }
+
+    snake.unshift({ x: snakeX, y: snakeY });
+
+    if (snake.length > tailLength) {
+        snake.pop();
+    }
+
+    snake.forEach(function (cell, index) {
+        ctx.beginPath();
+        ctx.fillStyle = '#7d2c98';
+        ctx.fillRect(cell.x, cell.y, snakeSize, snakeSize);
+        ctx.fill();
+    });
+
+    for (let i = 0; i < snake.length; i += 1){
+        if (snakeX == snake[i].x && snakeY == snake[i].y) {
+            //  clearInterval(gameInterval);
+            console.log('GAME OVER');
+        }
     }
 }
-
-randomFruitPosition();
-
-function randomFruitPosition() {
-    fx = getRandomCoord(canvas.width / snakeSize, 0) * snakeSize;
-    fy = getRandomCoord(canvas.height / snakeSize, 0) * snakeSize;
-    console.log(fx, fy);
-}
-
 
 document.addEventListener('keydown', snakeControl);
 
 function snakeControl(e) {
     if (e.keyCode == 39) {
-        x += snakeSize;
+        dx = snakeSize;
+        dy = 0;
     } else if (e.keyCode == 37) {
-        x -= snakeSize;
+        dx = -snakeSize;
+        dy = 0;
     } else if (e.keyCode == 38) {
-        y -= snakeSize;
+        dy = -snakeSize;
+        dx = 0;
     } else if (e.keyCode == 40) {
-        y += snakeSize;
+        dy = snakeSize;
+        dx = 0;
     }
 }
 
@@ -83,5 +109,4 @@ function getRandomCoord(max, min) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-let gameInterval = setInterval(draw, 10);
-
+let gameInterval = setInterval(draw, 100);
