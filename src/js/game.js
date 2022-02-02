@@ -22,11 +22,10 @@ let fruitX = getRandomCoord(refs.canvas.width / snakeSize, 0) * snakeSize;
 let fruitY = getRandomCoord(refs.canvas.width / snakeSize, 0) * snakeSize;
 
 let score = 0;
-let printScore = 0;
 let snake = [];
 let tailLength = 3;
 let gameInterval = null;
-let SPEED_GAME = 200;
+let SPEED_GAME = 5;
 
 document.addEventListener('keydown', snakeControl);
 refs.startBtn.addEventListener('click', startGame);
@@ -61,7 +60,6 @@ function drawSnake() {
 
     if (snakeX === fruitX && snakeY === fruitY) {
 
-        printScore += 1;
         score += 1;
         tailLength += 1;
 
@@ -97,6 +95,23 @@ function draw() {
     } else if (snakeY < 0) {
         snakeY = refs.canvas.height - snakeSize;
     }
+
+    if (score > 5 ) {
+        SPEED_GAME = 7;
+    }
+    
+    if (score > 10) {
+        SPEED_GAME = 10;
+    }
+    
+    if (score > 18) {
+        SPEED_GAME = 14;
+    }
+
+    console.log(SPEED_GAME);
+
+    gameInterval = setTimeout(draw, 1000 / SPEED_GAME)
+
 }
 
 function drawScore() {
@@ -133,10 +148,9 @@ function getRandomCoord(max, min) {
 
 function gameOver() {
 
-    clearInterval(gameInterval);
-    restartGame();
+    clearTimeout(gameInterval);
 
-    refs.scoreEl.textContent = `Your score: ${printScore}`;
+    refs.scoreEl.textContent = `Your score: ${score}`;
     refs.modalRestart.classList.remove('modal-close');
     refs.modalRestart.classList.add('modal-open');
 
@@ -157,30 +171,17 @@ function restartGame() {
 
     snake = [];
     tailLength = 3;
+    score = 0;
+    SPEED_GAME = 5;
 
-    gameInterval = setInterval(draw, 200);
-
+    dx = snakeSize;
+    dy = 0;
+    draw();
 }
 
 function startGame() {
 
     refs.modalStart.classList.remove('modal-open');
     refs.modalStart.classList.add('modal-close');
-
-    if (score > 5 ) {
-
-        SPEED_GAME = 150;
-        console.log('Скорость увеличена 1');
-
-    }else if(score > 10){
-
-        SPEED_GAME = 100;
-        console.log('Скорость увеличена 2');
-    }else if(score > 18){
-
-        SPEED_GAME = 50;
-        console.log('Скорость увеличена 3');
-    }
-
-    gameInterval = setInterval(draw, SPEED_GAME);
+    draw();
 }
