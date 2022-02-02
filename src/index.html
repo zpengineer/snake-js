@@ -6,8 +6,24 @@
     <title>Snake</title>
   </head>
   <body>
-    <h1>Snake</h1>
-    <canvas id="snake" width="300" height="300"></canvas>
+    
+    <!-- <h1>Snake</h1> -->
+
+    <div class="container">
+    
+      <canvas id="snake" width="400" height="400"></canvas>
+    
+    </div>
+    
+    <div class="modal modal-open" id="modalStart" data-modal>
+      <button type="button" data-modal-start>Start game</button>
+    </div>
+    
+    <div class="modal modal-close" id="modalRestart" data-modal>
+      <p class="score"></p>
+      <button type="button" data-modal-restart>Restart game</button>
+    </div>
+
     <script src="./index.js"></script>
   </body>
 </html>

@@ -12,8 +12,35 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  padding: 5px;
 }
 
-h1 {
-  margin-bottom: 15px;
+.container {
+  position: relative;
+  max-height: 400px;
+}
+
+.modal {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: black;
+}
+
+.modal-open {
+  display: flex;
+}
+
+.modal-close {
+  display: none;
+}
+
+.score {
+  color: #fff;
+  margin-bottom: 10px;
 }
