@@ -1,0 +1,2 @@
+*{padding:0;margin:0}canvas{background:#eee}body{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:5px}.container{position:relative;max-height:400px}.modal{flex-direction:column;justify-content:center;align-items:center;position:absolute;width:400px;height:400px;background:#000}.modal-open{display:flex}.modal-close{display:none}.score{color:#fff;margin-bottom:10px}
+/*# sourceMappingURL=/snake-js/src.7baa1331.css.map */
